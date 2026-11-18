@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f7f8fa" />
+    <title>CPU Scheduler Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="CPU Scheduler Lab home">
+          <span class="brand-mark" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+          </span>
+          <span>CPU Scheduler <strong>Lab</strong></span>
+        </a>
+        <nav class="topnav" aria-label="Primary navigation">
+          <a class="active" href="#simulator">Simulator</a>
+          <a href="#algorithms">Algorithms</a>
+          <a href="#results">Results</a>
+        </nav>
+        <button class="icon-button" id="theme-toggle" type="button" aria-label="Toggle color theme">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v2m0 14v2M3 12h2m14 0h2m-3.64-6.36-1.42 1.42M8.06 15.94l-1.42 1.42m0-11.72 1.42 1.42m7.88 8.88 1.42 1.42M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"/></svg>
+        </button>
+      </header>
+
+      <main>
+        <section class="hero" id="simulator">
+          <div>
+            <p class="eyebrow"><span></span> Scheduling simulator</p>
+            <h1>Compare CPU scheduling <em>at a glance.</em></h1>
+            <p class="hero-copy">Add processes, choose an algorithm, and see exactly how each policy schedules your workload.</p>
+          </div>
+          <div class="hero-status">
+            <span class="status-dot"></span>
+            <div><strong>Ready to simulate</strong><small id="process-count-status">3 processes loaded</small></div>
+          </div>
+        </section>
+
+        <section class="workspace">
+          <aside class="process-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="section-kicker">WORKLOAD</p>
+                <h2>Processes</h2>
+              </div>
+              <button class="add-button" id="add-process" type="button" aria-label="Add process">+</button>
+            </div>
+
+            <div class="process-table">
+              <div class="table-head">
+                <span>Process</span><span>Arrival</span><span>Burst</span><span></span>
+              </div>
+              <div id="process-rows"></div>
+            </div>
+
+            <button class="run-button" id="run-simulation" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"/></svg>
+              Run simulation
+            </button>
+          </aside>
+
+          <div class="visual-panel">
+            <div class="algorithm-bar" id="algorithms">
+              <div>
+                <p class="section-kicker">ALGORITHM</p>
+                <div class="algorithm-select-wrap">
+                  <select id="algorithm-select" aria-label="Scheduling algorithm">
+                    <option value="AAFS">AAFS — Adaptive Aging</option>
+                    <option value="SJF">SJF — Shortest Job First</option>
+                    <option value="SRTF">SRTF — Shortest Remaining Time</option>
+                    <option value="HRRN">HRRN — Highest Response Ratio</option>
+                  </select>
+                </div>
+              </div>
+              <div class="threshold-card">
+                <span>AAFS threshold</span>
+                <strong id="threshold-value">5</strong>
+              </div>
+            </div>
+
+            <div class="chart-card">
+              <div class="chart-heading">
+                <div>
+                  <p class="section-kicker">TIMELINE</p>
+                  <h2>Execution chart</h2>
+                </div>
+                <span class="live-badge"><i></i> LIVE</span>
+              </div>
+              <div class="chart-axis" id="chart-axis"></div>
+              <div class="gantt-chart" id="gantt-chart"></div>
+            </div>
+
+            <div class="metrics-grid" id="results">
+              <article class="metric-card">
+                <div class="metric-icon coral"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg></div>
+                <div><span>Average wait</span><strong id="avg-wait">7.00</strong><small>time units</small></div>
+              </article>
+              <article class="metric-card">
+                <div class="metric-icon blue"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+                <div><span>Turnaround</span><strong id="avg-turnaround">10.33</strong><small>time units</small></div>
+              </article>
+              <article class="metric-card">
+                <div class="metric-icon violet"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/></svg></div>
+                <div><span>Response time</span><strong id="avg-response">5.67</strong><small>time units</small></div>
+              </article>
+              <article class="metric-card">
+                <div class="metric-icon green"><svg viewBox="0 0 24 24"><path d="M4 18V9m5 9V5m6 13v-6m5 6V7"/></svg></div>
+                <div><span>CPU utilization</span><strong id="cpu-utilization">100%</strong><small>of total time</small></div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="comparison-section">
+          <div class="comparison-heading">
+            <div>
+              <p class="section-kicker">COMPARISON</p>
+              <h2>All algorithms</h2>
+            </div>
+            <p>Side-by-side performance for the current workload</p>
+          </div>
+          <div class="comparison-table-wrap">
+            <table>
+              <thead><tr><th>Algorithm</th><th>Avg. Wait</th><th>Avg. Turnaround</th><th>Avg. Response</th><th>CPU Util.</th><th>Throughput</th></tr></thead>
+              <tbody id="comparison-body"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
