@@ -1,0 +1,8 @@
+*.o
+cpu_scheduler
+aafs
+aafs_test
+test_hrrn
+test_sjf
+test_srtf
+test_scheduling
